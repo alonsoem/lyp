@@ -21,16 +21,34 @@ contains(ab(X, _, _), X).
 contains(ab(_, T1, _), X) :- contains(T1, X).
 contains(ab(_, _, T2), X) :- contains(T2, X).
 
+
+/* Cambie la definicion de esta regla, fijate si te va! */
 list_to_abb([], nil).
-list_to_abb(XS, T) :- elem(XS, X), contains(T, X), abb(T).
+list_to_abb(XS, ab(X, T1, T2)) :-
+    append(T1S, [X|T2S], XS),
+    list_to_abb(T1S, T1),
+    list_to_abb(T2S, T2).
+
 
 max(X, Y, X):- X >= Y,!.
 max(X, Y, Y):- X < Y,!.
 
+/*  Esta funcion puta no funca, solo me da un resultado y se cuelga*/
 abbal(nil, 0).
 abbal(ab(_, T1, T2), H):- 
     abbal(T1, H1), abbal(T2, H2),
     abs(H1-H2,Hs), Hs=<1, 
     max(H1,H2,X), 
     H is X+1.
+
+/* Esta esta OK*/
+list_to_avl([], nil).
+list_to_avl(XS, T) :- list_to_abb(XS, T), abbal(T, _).
+
+
+/* Esto es para analizar lo que dice el punto 5*/
+list_to_avl2([], nil).
+list_to_avl2(XS, T) :- abbal(T, _), list_to_abb(XS, T).
+
+
 
