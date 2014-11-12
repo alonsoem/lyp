@@ -23,3 +23,14 @@ contains(ab(_, _, T2), X) :- contains(T2, X).
 
 list_to_abb([], nil).
 list_to_abb(XS, T) :- elem(XS, X), contains(T, X), abb(T).
+
+max(X, Y, X):- X >= Y,!.
+max(X, Y, Y):- X < Y,!.
+
+abbal(nil, 0).
+abbal(ab(_, T1, T2), H):- 
+    abbal(T1, H1), abbal(T2, H2),
+    abs(H1-H2,Hs), Hs=<1, 
+    max(H1,H2,X), 
+    H is X+1.
+
