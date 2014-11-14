@@ -31,17 +31,40 @@ list_to_abb(XS, ab(X, T1, T2)) :-
 
 
 max(X, Y, X):- X >= Y,!.
-max(X, Y, Y):- X < Y,!.
+max(X, Y, Y):- X < Y, !.
 
-/*  Esta funcion puta no funca, solo me da un resultado y se cuelga*/
+altura(nil, 0).
+altura(ab(_, I, D), H) :- altura(I, HI), altura(D, HD), max(HI, HD, X), H is 1+X.
+
+sumas(0, X, X).
+sumas(X, 0, X).
+sumas(X, Y, Z) :- X > 0, sumas(X-1, Y+1, Z).
+
+toN(zero, 0).
+toN(suc(M), V):- toN(M, N), V is N+1.
+
+add(zero, M, M).
+add(suc(N), M, suc(S)):- add(N, M, S).
+
+
 abbal(nil, 0).
+abbal(ab(_, nil, nil), 1).
 abbal(ab(_, T1, T2), H):- 
-    abbal(T1, H1), abbal(T2, H2),
-    abs(H1-H2,Hs), Hs=<1, 
-    max(H1,H2,X), 
-    H is X+1.
+    H > 1,
+    X is H-1,
+    abbal(T1, X), abbal(T2, X).
+abbal(ab(_, T1, T2), H):- 
+    H > 1,
+    X is H-1,
+    H2 is X-1,
+    abbal(T1, X), abbal(T2, H2).
+abbal(ab(_, T1, T2), H):- 
+    H > 1,
+    X is H-1,
+    H1 is X-1,
+    abbal(T1, H1), abbal(T2, X).
 
-/* Esta esta OK*/
+/* Esta esta no funca ahora.*/
 list_to_avl([], nil).
 list_to_avl(XS, T) :- list_to_abb(XS, T), abbal(T, _).
 
