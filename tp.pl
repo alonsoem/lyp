@@ -27,25 +27,8 @@ list_to_abb([], nil).
 list_to_abb(XS, ab(X, T1, T2)) :-
     append(T1S, [X|T2S], XS),
     list_to_abb(T1S, T1),
-    list_to_abb(T2S, T2).
-
-
-max(X, Y, X):- X >= Y,!.
-max(X, Y, Y):- X < Y, !.
-
-altura(nil, 0).
-altura(ab(_, I, D), H) :- altura(I, HI), altura(D, HD), max(HI, HD, X), H is 1+X.
-
-sumas(0, X, X).
-sumas(X, 0, X).
-sumas(X, Y, Z) :- X > 0, sumas(X-1, Y+1, Z).
-
-toN(zero, 0).
-toN(suc(M), V):- toN(M, N), V is N+1.
-
-add(zero, M, M).
-add(suc(N), M, suc(S)):- add(N, M, S).
-
+    list_to_abb(T2S, T2), 
+    abb(ab(X, T1, T2)).
 
 abbal(nil, 0).
 abbal(ab(_, nil, nil), 1).
